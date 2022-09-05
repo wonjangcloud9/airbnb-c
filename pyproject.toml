@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "airbnb-c"
+version = "0.1.0"
+description = ""
+authors = ["wonjangcloud9 <48057918+wonjangcloud9@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "airbnb_c"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
