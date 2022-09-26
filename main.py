@@ -1,20 +1,12 @@
-class Human:
+class Dog:
     def __init__(self, name):
         self.name = name
+
+    def bark(self):
+        print("Woof!")
+    
     def __str__(self):
         return self.name
-    def say_hello(self):
-        print("Hello, I'm a human")
 
-class Player(Human):
-    def __init__(self, name):
-        super().__init__(name)
-    
-class Fan(Human):
-    def __init__(self, name):
-        super().__init__(name)
-    def say_hello(self):
-        print("Hello, I'm a fan")
-
-fan = Fan("John")
-fan.say_hello()
+jia= Dog("Jia")
+print(dir(jia))
