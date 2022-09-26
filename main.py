@@ -1,11 +1,20 @@
-class Player:
-
-    def __init__(self, name, age):
+class Human:
+    def __init__(self, name):
         self.name = name
-        self.age = age
-
     def __str__(self):
-        return f"Name: {self.name}, Age: {self.age}"
+        return self.name
+    def say_hello(self):
+        print("Hello, I'm a human")
 
-player = Player("John", 20)
-print(player)
+class Player(Human):
+    def __init__(self, name):
+        super().__init__(name)
+    
+class Fan(Human):
+    def __init__(self, name):
+        super().__init__(name)
+    def say_hello(self):
+        print("Hello, I'm a fan")
+
+fan = Fan("John")
+fan.say_hello()
