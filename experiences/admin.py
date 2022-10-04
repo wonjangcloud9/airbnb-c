@@ -27,17 +27,7 @@ class ExperienceAdmin(admin.ModelAdmin):
         "description",
     )
 
-    list_filter = (
-        "country",
-        "city",
-        "name",
-        "host",
-        "price",
-        "address",
-        "start",
-        "end",
-        "description",
-    )
+    list_filter = ("category",)
 
     readonly_fields = (
         "created_at",
