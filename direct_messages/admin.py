@@ -10,6 +10,9 @@ class ChattingRoomAdmin(admin.ModelAdmin):
 
     list_display = ("__str__", "created_at", "updated_at")
 
+    def __str__(self):
+        return "Hi"
+
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
