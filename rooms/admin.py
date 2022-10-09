@@ -15,6 +15,7 @@ class RoomAdmin(admin.ModelAdmin):
         "owner",
         "total_amenities",
         "created_at",
+        "rating",
     )
 
     list_filter = (
@@ -33,6 +34,11 @@ class RoomAdmin(admin.ModelAdmin):
     readonly_fields = (
         "created_at",
         "updated_at",
+    )
+
+    search_fields = (
+        "name",
+        "price",
     )
 
 
