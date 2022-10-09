@@ -4,9 +4,16 @@ from .models import Room, Amenity
 # Register your models here.
 
 
+@admin.action(description="Set all prices to 0")
+def set_zero(modeladmin, request, queryset):
+    queryset.update(price=0)
+
+
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     """Room Admin Definition"""
+
+    actions = (set_zero,)
 
     list_display = (
         "name",
