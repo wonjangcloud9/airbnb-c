@@ -10,17 +10,11 @@ class RoomAdmin(admin.ModelAdmin):
 
     list_display = (
         "name",
-        "country",
-        "city",
         "price",
-        "rooms",
-        "toilets",
-        "address",
-        "pet_allowed",
         "kind",
         "owner",
+        "total_amenities",
         "created_at",
-        "updated_at",
     )
 
     list_filter = (
