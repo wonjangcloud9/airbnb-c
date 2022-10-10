@@ -8,5 +8,15 @@
 </head>
 <body>
     {{title}}
+    <ul>
+        {% for room in rooms %}
+            <a href="/rooms/{{room.pk}}">{{room.name}}
+                <br />
+                {% for amenity in room.amenity.all %}
+                    <span>{{amenity.name}}</span>
+                {% endfor %}
+            </a>
+        {% endfor %} 
+    </ul>
 </body>
 </html>
