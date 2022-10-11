@@ -1,16 +1,18 @@
 from .models import Category
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .serializers import CategorySerializer
 
 # Create your views here.
 
 
 @api_view(["GET"])
 def categories(request):
-    categories = Category.objects.all()
+    all_categories = Category.objects.all()
+    serializer = CategorySerializer(all_categories, many=True)
     return Response(
         {
             "ok": True,
-            "categories": Category.objects.all().values(),
+            "categories": serializer.data,
         }
     )
