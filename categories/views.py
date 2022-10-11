@@ -11,5 +11,6 @@ def categories(request):
     return Response(
         {
             "ok": True,
+            "categories": Category.objects.all().values(),
         }
     )
