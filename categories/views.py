@@ -23,7 +23,7 @@ def categories(request):
         return Response(serializer.errors)
 
 
-@api_view(["GET", "PUT"])
+@api_view(["GET", "PUT", "DELETE"])
 def category(request, pk):
     if request.method == "GET":
         try:
@@ -47,6 +47,23 @@ def category(request, pk):
                 updated_category = serializer.save()
                 return Response(CategorySerializer(updated_category).data)
             return Response(serializer.errors)
+        except Category.DoesNotExist:
+            return Response(
+                {
+                    "error": "Category not found",
+                },
+                status=404,
+            )
+    elif request.method == "DELETE":
+        try:
+            category = Category.objects.get(pk=pk)
+            category.delete()
+            return Response(
+                {
+                    "message": "Category deleted",
+                },
+                status=204,
+            )
         except Category.DoesNotExist:
             return Response(
                 {
