@@ -22,3 +22,8 @@ class CategorySerializer(serializers.Serializer):
         instance.kind = validated_data.get("kind", instance.kind)
         instance.save()
         return instance
+
+    def validate_name(self, value):
+        if Category.objects.filter(name=value).exists():
+            raise serializers.ValidationError("Category with that name already exists")
+        return value
