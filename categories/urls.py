@@ -4,10 +4,21 @@ from . import views
 urlpatterns = [
     path(
         "",
-        views.Categories.as_view(),
+        views.categoryViewSet.as_view(
+            {
+                "get": "list",
+                "post": "create",
+            }
+        ),
     ),
     path(
         "<int:pk>",
-        views.CategoryDetail.as_view(),
+        views.categoryViewSet.as_view(
+            {
+                "get": "retrieve",
+                "put": "partial_update",
+                "delete": "destroy",
+            }
+        ),
     ),
 ]
