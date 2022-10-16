@@ -8,5 +8,6 @@
     "description": "DRF is great!",
     "address": "Seoul, Korea",
     "pet_allowed": true,
+    "category": 2,
     "kind": "entire"
 }

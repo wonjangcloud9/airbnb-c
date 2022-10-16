@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from .models import Amenity, Room
+from categories.models import Category
 from .serializers import AmenitySerializer, RoomListSerializer, RoomDetailSerializer
 
 
@@ -60,7 +61,16 @@ class Rooms(APIView):
         if request.user.is_authenticated:
             serializer = RoomDetailSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(owner=request.user)
+                category_pk = request.data.get("category")
+                if not category_pk:
+                    return Response(status=400)
+                try:
+                    category = Category.objects.get(pk=category_pk)
+                    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+                        return Response(status=400)
+                except Category.DoesNotExist:
+                    return Response(status=400)
+                serializer.save(owner=request.user, category=category)
                 return Response(data=serializer.data)
             else:
                 return Response(status=400)
