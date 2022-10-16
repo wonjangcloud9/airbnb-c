@@ -55,7 +55,9 @@ class AmenityDetail(APIView):
 class Rooms(APIView):
     def get(self, request):
         all_rooms = Room.objects.all()
-        serializer = RoomListSerializer(all_rooms, many=True)
+        serializer = RoomListSerializer(
+            all_rooms, many=True, context={"request": request}
+        )
         return Response(data=serializer.data)
 
     def post(self, request):
@@ -106,7 +108,7 @@ class RoomDetail(APIView):
     def get(self, request, pk):
         try:
             room = Room.objects.get(pk=pk)
-            serializer = RoomDetailSerializer(room)
+            serializer = RoomDetailSerializer(room, context={"request": request})
             return Response(data=serializer.data)
         except Room.DoesNotExist:
             return Response(status=404)
