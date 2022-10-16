@@ -9,6 +9,6 @@
     "address": "Seoul, Korea",
     "pet_allowed": true,
     "category": 1,
-    "amenities": [1,2,3,4],
+    "amenities": [6777,2,3,4],
     "kind": "entire"
 }

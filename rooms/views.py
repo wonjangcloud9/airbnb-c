@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
@@ -74,16 +75,23 @@ class Rooms(APIView):
                     return Response(
                         status=400, data={"error": "Category is not for rooms"}
                     )
-                room = serializer.save(owner=request.user, category=category)
-                amenities = request.data.get("amenities")
-                for amenity_pk in amenities:
-                    try:
-                        Amenity.objects.get(pk=amenity_pk)
-                        room.amenity.add(amenity_pk)
-                    except Amenity.DoesNotExist:
-                        pass
-                serializer = RoomDetailSerializer(room)
-                return Response(serializer.data)
+                try:
+                    with transaction.atomic():
+                        room = serializer.save(
+                            owner=request.user,
+                            category=category,
+                        )
+
+                        amenities = request.data.get("amenities")
+                        for amenity_pk in amenities:
+                            Amenity.objects.get(pk=amenity_pk)
+                            room.amenity.add(amenity_pk)
+                        serializer = RoomDetailSerializer(room)
+                        return Response(serializer.data)
+                except Exception:
+                    return Response(
+                        status=400, data={"error": "Amenity does not exist"}
+                    )
             else:
                 return Response(status=400)
 
