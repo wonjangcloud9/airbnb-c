@@ -113,14 +113,22 @@ class RoomDetail(APIView):
 
     def put(self, request, pk):
         room = self.get_object(pk)
+        if not request.user.is_authenticated:
+            return Response(status=401, data={"error": "Unauthorized"})
+        if room.owner.pk != request.user.pk:
+            return Response(status=403, data={"error": "Forbidden"})
         serializer = RoomDetailSerializer(room, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data)
         else:
-            return Response(status=404)
+            return Response(status=404, data={"error": "Room not found"})
 
     def delete(self, request, pk):
         room = self.get_object(pk)
+        if not request.user.is_authenticated:
+            return Response(status=401, data={"error": "Unauthorized"})
+        if room.owner.pk != request.user.pk:
+            return Response(status=403, data={"error": "Forbidden"})
         room.delete()
-        return Response(status=204)
+        return Response(status=204, data={"message": "Room deleted"})
