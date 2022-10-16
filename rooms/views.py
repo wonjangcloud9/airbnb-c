@@ -74,8 +74,16 @@ class Rooms(APIView):
                     return Response(
                         status=400, data={"error": "Category is not for rooms"}
                     )
-                serializer.save(owner=request.user, category=category)
-                return Response(data=serializer.data)
+                room = serializer.save(owner=request.user, category=category)
+                amenities = request.data.get("amenities")
+                for amenity_pk in amenities:
+                    try:
+                        Amenity.objects.get(pk=amenity_pk)
+                        room.amenity.add(amenity_pk)
+                    except Amenity.DoesNotExist:
+                        pass
+                serializer = RoomDetailSerializer(room)
+                return Response(serializer.data)
             else:
                 return Response(status=400)
 
