@@ -2,9 +2,12 @@ from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
+
+from reviews.models import Review
 from .models import Amenity, Room
 from categories.models import Category
 from .serializers import AmenitySerializer, RoomListSerializer, RoomDetailSerializer
+from reviews.serializers import ReviewSerializer
 
 
 class Amenities(APIView):
@@ -134,3 +137,45 @@ class RoomDetail(APIView):
             return Response(status=403, data={"error": "Forbidden"})
         room.delete()
         return Response(status=204, data={"message": "Room deleted"})
+
+
+class RoomReviews(APIView):
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            return Response(status=404, data={"error": "Room not found"})
+
+    def get(self, request, pk):
+        try:
+            page = request.query_params.get("page", 1)
+            page = int(page)
+        except ValueError:
+            page = 1
+        page_size = 2
+        start = page_size * (page - 1)
+        end = start + page_size
+        room = self.get_object(pk)
+        serializer = ReviewSerializer(room.reviews.all()[start:end], many=True)
+        return Response(data=serializer.data)
+
+
+class RoomAmenities(APIView):
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            return Response(status=404, data={"error": "Room not found"})
+
+    def get(self, request, pk):
+        try:
+            page = request.query_params.get("page", 1)
+            page = int(page)
+        except ValueError:
+            page = 1
+        page_size = 2
+        start = page_size * (page - 1)
+        end = start + page_size
+        room = self.get_object(pk)
+        serializer = AmenitySerializer(room.amenity.all()[start:end], many=True)
+        return Response(data=serializer.data)
