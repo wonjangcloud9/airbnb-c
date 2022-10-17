@@ -11,10 +11,10 @@
     "category": 1,
     "amenities": [6777,2,3,4],
     "kind": "entire"
-},
+}
 
 
 {
-    "file":"www.naver.com",
+    "file":"https://www.naver.com",
     "description": "test"
-    }
+}
