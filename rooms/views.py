@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -152,7 +153,7 @@ class RoomReviews(APIView):
             page = int(page)
         except ValueError:
             page = 1
-        page_size = 2
+        page_size = settings.PAGE_SIZE
         start = page_size * (page - 1)
         end = start + page_size
         room = self.get_object(pk)
@@ -179,3 +180,8 @@ class RoomAmenities(APIView):
         room = self.get_object(pk)
         serializer = AmenitySerializer(room.amenity.all()[start:end], many=True)
         return Response(data=serializer.data)
+
+
+class RoomPhotos(APIView):
+    def post(self, request, pk):
+        pass
