@@ -191,6 +191,9 @@ class RoomPhotos(APIView):
         except Room.DoesNotExist:
             return Response(status=404, data={"error": "Room not found"})
 
+    def get(self, request, pk):
+        return Response(status=200)
+
     def post(self, request, pk):
         room = self.get_object(pk)
         if room.owner.pk != request.user.pk:
