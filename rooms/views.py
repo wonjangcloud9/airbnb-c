@@ -150,16 +150,8 @@ class RoomReviews(APIView):
             return Response(status=404, data={"error": "Room not found"})
 
     def get(self, request, pk):
-        try:
-            page = request.query_params.get("page", 1)
-            page = int(page)
-        except ValueError:
-            page = 1
-        page_size = settings.PAGE_SIZE
-        start = page_size * (page - 1)
-        end = start + page_size
         room = self.get_object(pk)
-        serializer = ReviewSerializer(room.reviews.all()[start:end], many=True)
+        serializer = ReviewSerializer(room.reviews.all(), many=True)
         return Response(data=serializer.data)
 
     def post(self, request, pk):
