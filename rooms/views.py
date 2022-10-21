@@ -158,7 +158,8 @@ class RoomReviews(APIView):
         room = self.get_object(pk)
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(room=room, user=request.user)
+            review = serializer.save(room=room, user=request.user)
+            serializer = ReviewSerializer(review)
             return Response(data=serializer.data)
         else:
             return Response(status=400, data={"error": "Bad Request"})
