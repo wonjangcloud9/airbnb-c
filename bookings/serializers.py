@@ -28,6 +28,22 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Check in date should be after today")
         return value
 
+    def validate(self, data):
+        check_in = data.get("check_in")
+        check_out = data.get("check_out")
+        room = data.get("room")
+        if check_in == check_out:
+            raise serializers.ValidationError(
+                "Check in and check out should be different"
+            )
+        if check_in > check_out:
+            raise serializers.ValidationError("Check out date should be after check in")
+        if Booking.objects.filter(
+            room=room, check_in__lte=check_out, check_out__gte=check_in
+        ):
+            raise serializers.ValidationError("This room is already booked")
+        return data
+
     def create(self, validated_data):
         guests = self.context.get("guests")
         room = validated_data.get("room")
