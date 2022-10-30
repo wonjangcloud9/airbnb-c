@@ -12,4 +12,5 @@ class WishListSerializer(ModelSerializer):
         fields = (
             "name",
             "rooms",
+            "pk",
         )
