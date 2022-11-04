@@ -41,3 +41,13 @@ class Users(APIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PublicUser(APIView):
+    def get(self, request, username):
+        try:
+            user = models.User.objects.get(username=username)
+            serializer = serializers.TinyUserSerializer(user)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
