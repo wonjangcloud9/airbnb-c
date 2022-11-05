@@ -7,7 +7,6 @@ from users.models import User
 
 class TrustMeBroAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        print(request.headers)
         username = request.headers.get("Trust-Me")
         if not username:
             return None
@@ -20,7 +19,6 @@ class TrustMeBroAuthentication(BaseAuthentication):
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        print(request.headers)
         token = request.headers.get("jwt")
         if not token:
             return None
