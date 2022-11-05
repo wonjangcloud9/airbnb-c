@@ -1,3 +1,5 @@
+import jwt
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -98,3 +100,25 @@ class LogOut(APIView):
 
         logout(request)
         return Response(status=status.HTTP_200_OK, data={"ok": "bye"})
+
+
+class JWTLogIn(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        if not username or not password:
+            raise ParseError("Username and password are required")
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+        if user:
+            payload = {"pk": user.pk}
+            token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+            return Response({"token": token}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"error": "Invalid username or password"},
+            )
